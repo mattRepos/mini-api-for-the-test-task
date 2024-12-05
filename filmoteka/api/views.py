@@ -23,10 +23,9 @@ class FavoriteViewSet(viewsets.ViewSet):
     @action(detail=False, methods=['post'], url_path='add')
     def add_to_favorites(self, request):
         serializer = FavoriteSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @action(detail=False, methods=['post'], url_path='remove')
     def remove_from_favorites(self, request):
